@@ -1,10 +1,34 @@
 # 🚀 Quantpraxus  
 ### YKS Analiz ve Performans Takip Sistemi
 
-> Öğrenci performansını veriyle buluşturan, modern ve kapsamlı bir analiz platformu.
+## 📺 Demo Video
+
+[![Quantpraxus Demo](https://img.youtube.com/vi/Rf20NjA9SwY/maxresdefault.jpg)](https://youtu.be/Rf20NjA9SwY)
+
+*Bu videoda projenin temel özellikleri ve kullanım senaryoları gösterilmektedir.*
+
+> Yapılan her çalışmayı en ince ayrıntısına kadar,raporlayın.
 
 <div align="center">
-  <img src="docs/images/dashboard.png" alt="Quantpraxus Dashboard Preview" width="800"/>
+  <img src="docs/images/raporlarim.png" alt="Quantpraxus Dashboard Preview" width="800"/>
+</div>
+
+> Çalışmalarınızı detaylıca planlayın.
+
+<div align="center">
+  <img src="docs/images/gorevlerim.png" alt="Quantpraxus Dashboard Preview" width="800"/>
+</div>
+
+> Hangi dersin hangi konusu ne zaman,kaç soru çıkmış,bilgi edinin ve çalışmalarınızı düzenleyin.
+
+<div align="center">
+  <img src="docs/images/konudagilimi.png" alt="Quantpraxus Dashboard Preview" width="800"/>
+</div>
+
+> Deneme ve Soru çözümlerinizde yapmış olduğunuz hatalara geri dönün ve bir daha aynı hataya düşmeyin.
+
+<div align="center">
+  <img src="docs/images/hatalikonularim.png" alt="Quantpraxus Dashboard Preview" width="800"/>
 </div>
 
 ![Version](https://img.shields.io/badge/version-0.0.3-blue.svg)
