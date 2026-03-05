@@ -506,7 +506,7 @@ export const aytTopics: SubjectTopics[] = [
   },
   {
     topic: "Hareket",
-    years: { "2025": 2, "2024": 1, "2023": 1, "2022": "−", "2021": "−", "2020": 1, "2019": 1, "2018": "−" }
+    years: { "2025": 1, "2024": 1, "2023": 1, "2022": "−", "2021": "−", "2020": 1, "2019": 1, "2018": "−" }
   },
   {
     topic: "Newton’ın Hareket Yasaları",
@@ -546,7 +546,7 @@ export const aytTopics: SubjectTopics[] = [
   },
   {
     topic: "İndüksiyon, Alternatif Akım ve Transformatörler",
-    years: { "2025": 2, "2024": 2, "2023": 2, "2022": 1, "2021": 1, "2020": 2, "2019": 2, "2018": 2 }
+    years: { "2025": 1, "2024": 2, "2023": 2, "2022": 1, "2021": 1, "2020": 2, "2019": 2, "2018": 2 }
   },
   {
     topic: "Düzgün Çembersel Hareket",
@@ -613,7 +613,7 @@ export const aytTopics: SubjectTopics[] = [
   },
   {
     topic: "Gazlar",
-    years: { "2025": 2, "2024": 1, "2023": 2, "2022": 1, "2021": 1, "2020": 1, "2019": 1, "2018": 1 }
+    years: { "2025": 1, "2024": 1, "2023": 2, "2022": 1, "2021": 1, "2020": 1, "2019": 1, "2018": 1 }
   },
   {
     topic: "Sıvı Çözeltiler",
