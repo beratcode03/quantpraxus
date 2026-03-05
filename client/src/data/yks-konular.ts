@@ -721,6 +721,7 @@ topics: [
 ]
   }
 ];
+
 // BERAT BİLAL CANKIR
 // BERAT CANKIR
 // CANKIR
