@@ -1,31 +1,31 @@
 # 🚀 Quantpraxus  
-### YKS Analiz ve Performans Takip Sistemi
+### University Exam (YKS) Analysis and Performance Tracking System
 
 ## 📺 Demo Video
 
 [![Quantpraxus Demo](https://img.youtube.com/vi/Rf20NjA9SwY/maxresdefault.jpg)](https://youtu.be/Rf20NjA9SwY)
 
-*Bu videoda projenin temel özellikleri ve kullanım senaryoları gösterilmektedir.*
+*This video demonstrates the core features and usage scenarios of the project.*
 
-> Yapılan her çalışmayı en ince ayrıntısına kadar,raporlayın.
+> Report every study session down to the finest detail.
 
 <div align="center">
   <img src="docs/images/raporlarim.png" alt="Quantpraxus Dashboard Preview" width="800"/>
 </div>
 
-> Çalışmalarınızı detaylıca planlayın.
+> Plan your studies in detail.
 
 <div align="center">
   <img src="docs/images/gorevlerim.png" alt="Quantpraxus Dashboard Preview" width="800"/>
 </div>
 
-> Hangi dersin hangi konusu ne zaman,kaç soru çıkmış,bilgi edinin ve çalışmalarınızı düzenleyin.
+> Discover when and how many questions appeared for each subject, and organize your studies accordingly.
 
 <div align="center">
   <img src="docs/images/konudagilimi.png" alt="Quantpraxus Dashboard Preview" width="800"/>
 </div>
 
-> Deneme ve Soru çözümlerinizde yapmış olduğunuz hatalara geri dönün ve bir daha aynı hataya düşmeyin.
+> Review the mistakes you made in practice exams and question solving, and avoid repeating them.
 
 <div align="center">
   <img src="docs/images/hatalikonularim.png" alt="Quantpraxus Dashboard Preview" width="800"/>
@@ -41,11 +41,11 @@
 
 ## 🎯 About
 
-Quantpraxus, YKS hazırlık sürecinde öğrenci performansını ölçülebilir ve analiz edilebilir hale getirmek için geliştirilmiş full-stack bir analiz platformudur.
+Quantpraxus is a full-stack analysis platform developed to make student performance measurable and analyzable during the university exam (YKS) preparation process. 
 
-Basit bir net takip aracından, performans trendlerini, konu bazlı eksikleri ve çalışma alışkanlıklarını analiz eden modüler bir sisteme evrilmiştir.
+It has evolved from a simple score tracker into a modular system that analyzes performance trends, subject-based weaknesses, and study habits.
 
-Web ve masaüstü (Electron) ortamlarında çalışır.
+It runs smoothly on both web and desktop (Electron) environments.
 
 ---
 
@@ -92,18 +92,16 @@ JSON Storage ↔ PostgreSQL (Planned)
 ## ⚙️ Engineering Challenges
 
 ### 1. ESM vs CJS Conflict
-Vite (ESM) ile Electron (CJS) modül sistemi çakışması, ayrı build pipeline stratejisi uygulanarak çözüldü.
+The module system conflict between Vite (ESM) and Electron (CJS) was resolved by implementing a separate build pipeline strategy.
 
 ### 2. Timezone Normalization
-UTC ve Türkiye saat farklarından doğan veri tutarsızlıkları, merkezi tarih yardımcı fonksiyonları ile normalize edildi.
+Data inconsistencies arising from UTC and Turkey time zone differences were normalized using centralized date helper functions.
 
 ### 3. Performance Optimization
-1000+ kayıt içeren veri setlerinde:
-- Optimize edilmiş sorgular
-- Memoization teknikleri
+Performance was improved in datasets containing 1000+ records by using:
+- Optimized queries
+- Memoization techniques
 - Lazy rendering
-
-kullanılarak performans iyileştirildi.
 
 ---
 
