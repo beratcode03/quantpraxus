@@ -1,7 +1,8 @@
+// Ortam değişkenlerini yükler.
 import dotenv from "dotenv";
 import path from "path";
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
 import express from "express";
 import { registerRoutes } from "./rotalar";
@@ -9,6 +10,7 @@ import { log, serveStatic } from "./static";
 import { validateEnvironmentVariables } from "./env-validation";
 import { storage } from "./depolama";
 
+// Gerekli ortam değişkenlerini kontrol eder.
 validateEnvironmentVariables();
 
 const app = express();
@@ -20,6 +22,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// API istekleri için performans ve hata odaklı loglama yapar.
 app.use((req, res, next) => {
   const start = Date.now();
   const pathReq = req.path;
@@ -33,33 +36,35 @@ app.use((req, res, next) => {
 
   res.on("finish", () => {
     const duration = Date.now() - start;
+
     if (pathReq.startsWith("/api")) {
-      // Gereksiz logları filtrele
-      const shouldSkipLog = (
-        (req.method === 'GET' && res.statusCode === 304) ||
-        // Hızlı GET isteklerini atla
-        (req.method === 'GET' && duration < 50 && res.statusCode === 200)
-      );
+      // Gereksiz ve hızlı istekleri loglamaz.
+      const shouldSkipLog =
+        (req.method === "GET" && res.statusCode === 304) ||
+        (req.method === "GET" && duration < 50 && res.statusCode === 200);
 
       if (shouldSkipLog) {
         return;
       }
 
-      const externalIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-      
-      // Sadece önemli bilgileri logla
+      const externalIp =
+        req.headers["x-forwarded-for"] ||
+        req.socket.remoteAddress ||
+        "unknown";
+
       let logLine = `${req.method} ${pathReq} ${res.statusCode} in ${duration}ms`;
-      
-      // Hata durumlarında veya yavaş isteklerde detay ekle
+
+      // Hata veya yavaş isteklerde IP logla
       if (res.statusCode >= 400 || duration > 1000) {
         logLine += ` [IP: ${externalIp}]`;
       }
 
-      // Sadece hata durumlarında response bodyyi logla
+      // Sadece hatalı yanıtlar!!!
       if (res.statusCode >= 400 && capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
 
+      // Log max 200 karakter
       if (logLine.length > 200) {
         logLine = logLine.slice(0, 199) + "…";
       }
@@ -72,8 +77,10 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // API routes save ve başlat
   const server = await registerRoutes(app);
 
+  // main sunucu bug loglar
   app.use((err: any, _req: any, res: any, _next: any) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
@@ -82,6 +89,7 @@ app.use((req, res, next) => {
     res.status(status).json({ message });
   });
 
+  // Geliştirmede Vite, productionda statik dosyalar
   if (app.get("env") === "development") {
     const { setupVite } = await import("./vite");
     await setupVite(app, server);
@@ -92,67 +100,77 @@ app.use((req, res, next) => {
   const port = parseInt(process.env.PORT || "5000", 10);
   const host = process.env.HOST || "127.0.0.1";
 
+  // host config
   server.listen(port, host, () => {
     log(`Dersime dönebilirim !!! Site Link : http://${host}:${port}`);
   });
 
-  // Otomatik arşivleme zamanlayıcısı - Her Pazar 23:59'da çalışır
+  // Haftalık otomatik arşivleme zamanlayıcısını oluştur
   function scheduleAutoArchive() {
-    // Türkiye saati için tarih hesaplama
+    // Türkiye saatine göre hesapla
     const now = new Date();
-    const turkeyTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' }));
-    
-    // Bir sonraki Pazar 23:59'u bul
+    const turkeyTime = new Date(
+      now.toLocaleString("en-US", { timeZone: "Europe/Istanbul" })
+    );
+
+    // Bir sonraki Pazar 23:59 zamanını hesapla
     const nextSunday = new Date(turkeyTime);
     const currentDay = nextSunday.getDay();
-    
-    // Bugün Pazar ise ve saat 23:59'u geçmemişse, bugün arşivle
-    // Bugün Pazar ise ve saat 23:59'u geçtiyse, gelecek Pazar arşivle
-    // Diğer günlerdeyse, bu haftanın veya gelecek haftanın Pazarına göre hesapla
+
     let daysUntilSunday: number;
+
     if (currentDay === 0) {
-      // Pazar günü
       const targetTime = new Date(turkeyTime);
       targetTime.setHours(23, 59, 0, 0);
+
       daysUntilSunday = turkeyTime < targetTime ? 0 : 7;
     } else {
-      // Pazar değil
       daysUntilSunday = 7 - currentDay;
     }
-    
+
     nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
     nextSunday.setHours(23, 59, 0, 0);
-    
-    const msUntilSunday = nextSunday.getTime() - turkeyTime.getTime();
 
+    const msUntilSunday =
+      nextSunday.getTime() - turkeyTime.getTime();
+
+    // İlk arşivleme zamanını planla
     setTimeout(() => {
       log("📅 Pazar 23:59 - Haftalık otomatik arşivleme başlatılıyor...");
-      storage.autoArchiveOldData()
+
+      storage
+        .autoArchiveOldData()
         .then(() => {
           log("✅ Haftalık otomatik arşivleme tamamlandı");
         })
         .catch((error) => {
           console.error("❌ Haftalık otomatik arşivleme hatası:", error);
         });
-      
-      // Bir sonraki hafta için tekrar zamanla
+
+      // Sonraki arşivlemeleri haftalık olarak tekrarla
       setInterval(() => {
         log("📅 Pazar 23:59 - Haftalık otomatik arşivleme başlatılıyor...");
-        storage.autoArchiveOldData()
+
+        storage
+          .autoArchiveOldData()
           .then(() => {
             log("✅ Haftalık otomatik arşivleme tamamlandı");
           })
           .catch((error) => {
             console.error("❌ Haftalık otomatik arşivleme hatası:", error);
           });
-      }, 7 * 24 * 60 * 60 * 1000); // 7 gün
+      }, 7 * 24 * 60 * 60 * 1000);
     }, msUntilSunday);
 
+    // Bir sonraki arşivlemeye kalan süreyi logla
     const hoursUntil = Math.round(msUntilSunday / 1000 / 60 / 60);
     const daysUntil = Math.floor(hoursUntil / 24);
-    log(` ÖZEL ANALİZ TAKİP SİSTEMİNİZ GAYET GÜZEL ÇALIŞIYOR İYİ DERSLER DİLERİM :) .`);
+
+    log(
+      ` ÖZEL ANALİZ TAKİP SİSTEMİNİZ GAYET GÜZEL ÇALIŞIYOR İYİ DERSLER DİLERİM :) .`
+    );
   }
 
+  // Otomatik arşivleme zamanlayıcısını başlat
   scheduleAutoArchive();
 })();
-
